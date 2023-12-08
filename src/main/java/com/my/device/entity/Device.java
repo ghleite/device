@@ -2,16 +2,14 @@ package com.my.device.entity;
 
 import com.my.device.dto.DeviceDTO;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Table(name = "device")
 @Entity(name = "Device")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
@@ -30,4 +28,5 @@ public class Device {
         this.brand = device.brand();
         this.creationTime = device.creationTime();
     }
+
 }

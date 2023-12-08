@@ -13,6 +13,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/devices")
@@ -46,5 +48,32 @@ public class DeviceController {
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>("Device not found!", HttpStatus.NO_CONTENT);
         }
+    }
+
+    @GetMapping
+    public ResponseEntity<List<DeviceDTO>> getAllDevices() {
+        List<Device> allDevices = this.deviceService.getAllDevices();
+        return new ResponseEntity<>(this.deviceService.deviceToDeviceDtoList(allDevices),
+                HttpStatus.OK);
+    }
+
+    @PutMapping("/{deviceId}")
+    public ResponseEntity<Object> updateDevice(@PathVariable Long deviceId, @RequestBody Device device) {
+        this.deviceService.updateDevice(deviceId, device);
+        return new ResponseEntity<>(new DeviceDTO(device), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{deviceId}")
+    public ResponseEntity<Object> deleteDevice(@PathVariable Long deviceId) {
+        this.deviceService.deleteDevice(deviceId);
+        return new ResponseEntity<>("Device of ID: " + deviceId + " has been deleted!",
+                HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<DeviceDTO>> searchDeviceByBrand(@RequestParam String brand) {
+        List<Device> devicesByBrand = this.deviceService.searchDeviceByBrand(brand);
+        return new ResponseEntity<>(this.deviceService.deviceToDeviceDtoList(devicesByBrand),
+                HttpStatus.OK);
     }
 }
