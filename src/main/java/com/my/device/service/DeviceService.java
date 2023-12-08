@@ -1,7 +1,9 @@
 package com.my.device.service;
 
-import org.springframework.stereotype.Service;
+import com.my.device.dto.DeviceDTO;
+import com.my.device.entity.Device;
 
-@Service
-public class DeviceService {
+public interface DeviceService {
+    void addDevice(DeviceDTO device) throws Exception;
+    Device getDeviceById(Long deviceId);
 }

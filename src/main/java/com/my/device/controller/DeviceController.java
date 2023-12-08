@@ -2,7 +2,7 @@ package com.my.device.controller;
 
 import com.my.device.dto.DeviceDTO;
 import com.my.device.entity.Device;
-import com.my.device.repository.DeviceRepository;
+import com.my.device.service.DeviceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -18,11 +18,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/devices")
 public class DeviceController {
 
-//    @Autowired
-//    private DeviceService deviceService;
-
     @Autowired
-    private DeviceRepository deviceRepository;
+    private DeviceService deviceService;
 
     @Operation(summary = "Create device", description = "To create a new device")
     @ApiResponses(value = {
@@ -32,12 +29,8 @@ public class DeviceController {
     @PostMapping
     public ResponseEntity<Object> addDevice(@RequestBody DeviceDTO device) {
         try {
-            if (!this.deviceRepository.existsById(device.id())) {
-                this.deviceRepository.save(new Device(device));
-                return new ResponseEntity<>(HttpStatus.CREATED);
-            } else {
-                throw new Exception("Device already exists! Try update it if it is the case.");
-            }
+            this.deviceService.addDevice(device);
+            return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>("Could not create device due to error: " + e.getMessage(),
                     HttpStatus.INTERNAL_SERVER_ERROR);
@@ -48,7 +41,7 @@ public class DeviceController {
     @GetMapping(value = "/{deviceId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> getDeviceById(@PathVariable Long deviceId) {
         try {
-            var device = this.deviceRepository.getReferenceById(deviceId);
+            Device device = this.deviceService.getDeviceById(deviceId);
             return new ResponseEntity<>(new DeviceDTO(device), HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>("Device not found!", HttpStatus.NO_CONTENT);
