@@ -5,6 +5,23 @@ MyDevice is an open API to manage and store your devices.
 It is also a training technical exercise.
 
 ---
+## 🛠️ How to run the project
+
+Git clone the project in your local repository
+
+Run the maven command inside the project
+
+> mvn clean install
+
+Then run the java command to run the project itself
+
+> java -jar device-0.0.1-SNAPSHOT.jar
+
+The API have a swagger UI, so it would be easy to test the operations and the URL should be:
+
+> http://localhost:8080/swagger-ui/index.html
+
+---
 
 ## ⚙️ Supported operations
 
